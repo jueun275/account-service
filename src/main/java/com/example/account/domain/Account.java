@@ -1,6 +1,8 @@
 package com.example.account.domain;
 
 
+import com.example.account.exception.AccountException;
+import com.example.account.exception.ErrorCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,5 +49,12 @@ public class Account extends BaseTime {
         this.accountStatus = AccountStatus.IN_USE;
         this.balance = balance;
         this.registeredAt = LocalDateTime.now();
+    }
+
+    public void useBalance(Long amount) {
+        if(this.balance < amount) {
+            throw new AccountException(ErrorCode.AMOUNT_EXCEED_BALANCE);
+        }
+        balance -= amount;
     }
 }
