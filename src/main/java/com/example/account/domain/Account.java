@@ -35,6 +35,11 @@ public class Account extends BaseTime {
     private LocalDateTime registeredAt;
     private LocalDateTime unregisteredAt;
 
+    public void unregisterAccount() {
+        this.accountStatus = AccountStatus.UNREGISTERED;
+        this.unregisteredAt = LocalDateTime.now();
+    }
+
     @Builder
     public Account(AccountUser accountUser, String accountNumber, Long balance) {
         this.accountUser = accountUser;

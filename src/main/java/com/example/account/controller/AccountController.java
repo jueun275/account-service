@@ -2,6 +2,7 @@ package com.example.account.controller;
 
 
 import com.example.account.dto.AccountDto;
+import com.example.account.dto.CloseAccount;
 import com.example.account.dto.CreateAccount;
 import com.example.account.service.AccountService;
 import com.example.account.service.RedisTestService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -29,4 +31,16 @@ public class AccountController {
                 requestDto.getInitBalance())
         );
     }
+
+    @DeleteMapping("/account")
+    public CloseAccount.Response closeAccount(
+        @RequestBody @Valid CloseAccount.Request requestDto) {
+
+        return CloseAccount.Response.from(
+            accountService.closeAccount(
+                requestDto.getUserId(),
+                requestDto.getAccountNumber())
+        );
+    }
+
 }
