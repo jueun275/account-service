@@ -1,6 +1,7 @@
 package com.example.account.controller;
 
 import com.example.account.dto.AccountDto;
+import com.example.account.dto.CloseAccount;
 import com.example.account.dto.CreateAccount;
 import com.example.account.service.AccountService;
 import com.example.account.service.RedisTestService;
@@ -16,7 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -59,6 +62,29 @@ class AccountControllerTest {
             )))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.userId").value(1))
+            .andDo(print());
+    }
+
+    @Test
+    void successCloseAccount() throws Exception {
+        // given
+        given(accountService.closeAccount(anyLong(), anyString()))
+            .willReturn(AccountDto.builder()
+                .userId(1L)
+                .accountNumber("1234567890")
+                .registeredAt(LocalDateTime.now())
+                .unRegisteredAt(LocalDateTime.now())
+                .build());
+
+        // when
+        // then
+        mockMvc.perform(delete("/account")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(
+                    new CloseAccount.Request(3333L, "1234567890")
+                )))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.accountNumber").value("1234567890"))
             .andDo(print());
     }
 
