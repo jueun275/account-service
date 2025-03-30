@@ -4,6 +4,8 @@ import com.example.account.domain.Account;
 import com.example.account.domain.AccountStatus;
 import com.example.account.domain.AccountUser;
 import com.example.account.dto.AccountDto;
+import com.example.account.exception.AccountException;
+import com.example.account.exception.ErrorCode;
 import com.example.account.repository.AccountRepository;
 import com.example.account.repository.AccountUserRepository;
 import jakarta.transaction.Transactional;
@@ -28,7 +30,7 @@ public class AccountService {
     @Transactional
     public AccountDto createAccount(Long userId, Long initialBalance) {
         AccountUser user = accountUserRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+            .orElseThrow(() -> new AccountException(ErrorCode.USER_NOT_FOUND));
 
         validateCreateAccount(user);
 
@@ -44,7 +46,7 @@ public class AccountService {
 
     private void validateCreateAccount(AccountUser user) {
         if (accountRepository.countByAccountUser(user) >= 10) {
-            throw new RuntimeException("최대 계좌 개수를 초과했습니다.");
+            throw new AccountException(ErrorCode.USER_ACCOUNT_PER_USER_10);
         }
     }
 

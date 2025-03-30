@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
-    long countByAccountUser(AccountUser user);
+    Integer countByAccountUser(AccountUser user);
     Optional<Account> findByAccountNumber(String accountNumber);
     Optional<Account> findFirstByOrderByIdDesc();
 }
