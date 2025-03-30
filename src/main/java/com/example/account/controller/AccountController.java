@@ -2,6 +2,7 @@ package com.example.account.controller;
 
 
 import com.example.account.dto.AccountDto;
+import com.example.account.dto.AccountInfo;
 import com.example.account.dto.CloseAccount;
 import com.example.account.dto.CreateAccount;
 import com.example.account.service.AccountService;
@@ -11,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -32,6 +36,15 @@ public class AccountController {
         );
     }
 
+    // 계좌 조회
+    @GetMapping("/account")
+    public List<AccountInfo> getAccountByUserId(
+        @RequestParam("user_id") Long userId) {
+        return accountService.getAccountByUserId(userId).stream()
+            .map(AccountInfo::from)
+            .collect(Collectors.toList());
+    }
+
     @DeleteMapping("/account")
     public CloseAccount.Response closeAccount(
         @RequestBody @Valid CloseAccount.Request requestDto) {
@@ -42,5 +55,7 @@ public class AccountController {
                 requestDto.getAccountNumber())
         );
     }
+
+
 
 }

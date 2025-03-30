@@ -13,6 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.example.account.exception.ErrorCode.USER_NOT_FOUND;
 
 
 @Service
@@ -29,7 +34,7 @@ public class AccountService {
     @Transactional
     public AccountDto createAccount(Long userId, Long initialBalance) {
         AccountUser user = accountUserRepository.findById(userId)
-            .orElseThrow(() -> new AccountException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
 
         validateCreateAccount(user);
 
@@ -44,9 +49,22 @@ public class AccountService {
     }
 
     @Transactional
+    public List<AccountDto> getAccountByUserId(Long userId) {
+        AccountUser user = accountUserRepository.findById(userId)
+            .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+
+        List<Account> accounts = accountRepository.findByAccountUserAndAccountStatus(user, AccountStatus.IN_USE);
+
+        return accounts.stream()
+            .map(AccountDto::fromEntity)
+            .collect(Collectors.toList());
+
+    }
+
+    @Transactional
     public AccountDto closeAccount(Long userId, String accountNumber) {
         AccountUser user = accountUserRepository.findById(userId)
-            .orElseThrow(() -> new AccountException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
 
         Account account = accountRepository.findByAccountNumber(accountNumber)
             .orElseThrow(() -> new AccountException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -60,7 +78,7 @@ public class AccountService {
     }
 
 
-    private static void validateCloseAccount(Account account, AccountUser user) {
+    private void validateCloseAccount(Account account, AccountUser user) {
         if (!account.getAccountUser().getId().equals(user.getId())) {
             throw new AccountException(ErrorCode.USER_ACCOUNT_UN_MATCH);
         }
@@ -84,6 +102,7 @@ public class AccountService {
             .map(account -> (Integer.parseInt((account.getAccountNumber()))) + 1 + "")
             .orElse("1000000000");
     }
+
 
 
 }
