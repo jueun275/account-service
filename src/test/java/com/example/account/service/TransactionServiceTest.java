@@ -440,5 +440,54 @@ class TransactionServiceTest {
         assertEquals(ErrorCode.CANCEL_MUST_FULLY, exception.getErrorCode());
     }
 
+    @Test
+    void successQueryTransaction() {
+        // given
+        Account accountUse = Account.builder()
+            .id(12L)
+            .balance(10000L)
+            .accountStatus(AccountStatus.IN_USE)
+            .accountNumber("1000000012")
+            .build();
+        Transaction transaction = Transaction.builder()
+            .transactionId("transactionCancel")
+            .account(accountUse)
+            .transactionType(USE)
+            .transactionResultType(SUCCESS)
+            .amount(CANCEL_AMOUNT)
+            .balanceSnapshot(10000L)
+            .transactionAt(LocalDateTime.now())
+            .build();
+
+
+        given(transactionRepository.findByTransactionId(anyString()))
+            .willReturn(Optional.of(transaction));
+        // when
+        TransactionDto transactionDto = transactionService.queryTransaction("trxId");
+        // then
+        assertEquals(USE, transactionDto.getTransactionType());
+        assertEquals(SUCCESS, transactionDto.getTransactionResultType());
+        assertEquals(CANCEL_AMOUNT, transactionDto.getAmount());
+
+
+    }
+
+    @DisplayName("해당 거래 없음 - 거래 조회 실패")
+    @Test
+    void queryTransaction_TransactionNotFound() {
+        // given
+        given(transactionRepository.findByTransactionId(anyString()))
+            .willReturn(Optional.empty());
+
+        // when
+        // then
+        AccountException exception = assertThrows(AccountException.class,
+            () -> transactionService.cancelBalance("transactionId", "1000000012", 1000L));
+
+        assertEquals(ErrorCode.TRANSACTION_NOT_FOUND, exception.getErrorCode());
+    }
+
+
+
 
 }
