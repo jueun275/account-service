@@ -79,12 +79,12 @@ public class TransactionService {
     }
 
     @Transactional()
-    public TransactionDto getTransaction(String transactionId) {
-        return transactionRepository.findByTransactionId(transactionId)
-            .map(TransactionDto::fromEntity)
-            .orElseThrow(() -> new AccountException(ErrorCode.TRANSACTION_NOT_FOUND));
+    public TransactionDto queryTransaction(String transactionId) {
+        return TransactionDto.fromEntity(
+            transactionRepository.findByTransactionId(transactionId)
+                .orElseThrow(() -> new AccountException(ErrorCode.TRANSACTION_NOT_FOUND))
+        );
     }
-
 
     private Transaction saveAndTransaction(Long amount, Account account, TransactionResultType transactionResultType, TransactionType transactionType) {
         return transactionRepository.save(Transaction.builder()
