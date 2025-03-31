@@ -1,5 +1,6 @@
 package com.example.account.controller;
 
+import com.example.account.dto.CancelBalance;
 import com.example.account.dto.UseBalance;
 import com.example.account.service.TransactionService;
 import jakarta.validation.Valid;
@@ -29,8 +30,29 @@ public class TransactionController {
                     requestDto.getAmount())
             );
         } catch (ArithmeticException e) {
-            log.error("Failed to use balanse");
+            log.error("Failed to use balance");
             transactionService.saveFailedUseTransaction(
+                requestDto.getAccountNumber(),
+                requestDto.getAmount()
+            );
+
+            throw e;
+        }
+    }
+
+    @PostMapping("/transaction/cancel")
+    public CancelBalance.Response cancelBalance(
+        @RequestBody @Valid CancelBalance.Request requestDto) {
+        try {
+            return CancelBalance.Response.from(
+                transactionService.cancelBalance(
+                    requestDto.getTransactionId(),
+                    requestDto.getAccountNumber(),
+                    requestDto.getAmount())
+            );
+        } catch (ArithmeticException e) {
+            log.error("Failed to cancel balance");
+            transactionService.saveFailedCancelTransaction(
                 requestDto.getAccountNumber(),
                 requestDto.getAmount()
             );
