@@ -1,16 +1,11 @@
 package com.example.account.controller;
 
-import com.example.account.domain.AccountUser;
+import com.example.account.dto.CancelBalance;
 import com.example.account.dto.TransactionDto;
-import com.example.account.dto.TransactionResultType;
 import com.example.account.dto.UseBalance;
-import com.example.account.exception.AccountException;
-import com.example.account.exception.ErrorCode;
 import com.example.account.service.TransactionService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.account.type.TransactionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,10 +14,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static com.example.account.dto.TransactionResultType.SUCCESS;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -32,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = TransactionController.class)
-class transactionControllerTest {
+class TransactionControllerTest {
 
     @MockitoBean
     private TransactionService transactionService;
@@ -54,9 +47,11 @@ class transactionControllerTest {
                 .amount(12345L)
                 .transactionId("transactionId")
                 .transactionResultType(SUCCESS)
+                .transactionType(TransactionType.USE)
                 .build());
 
         // when
+        // then
         mockMvc.perform(post("/transaction/use")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(
@@ -69,8 +64,35 @@ class transactionControllerTest {
             .andExpect(jsonPath("$.transactionId").value("transactionId"))
             .andExpect(jsonPath("$.amount").value(12345))
         ;
-        // then
+    }
 
+    @Test
+    void successCancelBalance() throws Exception {
+        // given
+        given(transactionService.cancelBalance(anyString(), anyString(), anyLong()))
+            .willReturn(TransactionDto.builder()
+                .accountNumber("1000000000")
+                .transactionResultType(SUCCESS)
+                .transactionType(TransactionType.CANCEL)
+                .transactedAt(LocalDateTime.now())
+                .amount(12345L)
+                .transactionId("transactionCancel")
+                .build());
+
+        // when
+        // then
+        mockMvc.perform(post("/transaction/cancel")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(
+                    new CancelBalance.Request("2000000000","transactionId", 3000L)
+                ))
+            ).andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.accountNumber").value("1000000000"))
+            .andExpect(jsonPath("$.transactionResultType").value("SUCCESS"))
+            .andExpect(jsonPath("$.transactionId").value("transactionCancel"))
+            .andExpect(jsonPath("$.amount").value(12345))
+        ;
     }
 
 }
