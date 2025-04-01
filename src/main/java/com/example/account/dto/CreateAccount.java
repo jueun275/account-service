@@ -1,5 +1,6 @@
 package com.example.account.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,8 @@ public class CreateAccount {
     public static class Request {
         @NotNull
         private Long userId;
+        @Min(1)
+
         private Long initBalance;
 
         public Request(Long userId, Long initBalance) {

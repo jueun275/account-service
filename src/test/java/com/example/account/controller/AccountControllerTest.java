@@ -3,6 +3,8 @@ package com.example.account.controller;
 import com.example.account.dto.AccountDto;
 import com.example.account.dto.CloseAccount;
 import com.example.account.dto.CreateAccount;
+import com.example.account.exception.AccountException;
+import com.example.account.exception.ErrorCode;
 import com.example.account.service.AccountService;
 import com.example.account.service.RedisTestService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.example.account.exception.ErrorCode.ACCOUNT_NOT_FOUND;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -89,7 +92,7 @@ class AccountControllerTest {
     }
 
     @Test
-    void successGetAccountById() throws Exception {
+    void successGetAccount() throws Exception {
         // given
         List<AccountDto> accounts = List.of(
             AccountDto.builder()
@@ -117,6 +120,20 @@ class AccountControllerTest {
             .andExpect(jsonPath("$[1].accountNumber").value("1000000001"))
             .andExpect(jsonPath("$[1].balance").value(2000))
             .andDo(print());
+    }
+
+    @Test
+    void failGetAccount() throws Exception {
+        // given
+        given(accountService.getAccountByUserId(anyLong()))
+            .willThrow(new AccountException(ACCOUNT_NOT_FOUND));
+
+        // when // then
+        mockMvc.perform(get("/account?user_id=345"))
+            .andDo(print())
+            .andExpect(jsonPath("$.errorCode").value("ACCOUNT_NOT_FOUND"))
+            .andExpect(jsonPath("$.errorMessage").value("계좌를 찾을 수 없습니다"));
+
     }
 
 }
