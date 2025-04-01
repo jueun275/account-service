@@ -1,8 +1,10 @@
 package com.example.account.controller;
 
+import com.example.account.aop.AccountLock;
 import com.example.account.dto.CancelBalance;
 import com.example.account.dto.QueryTransactionResponse;
 import com.example.account.dto.UseBalance;
+import com.example.account.exception.AccountException;
 import com.example.account.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,17 +21,22 @@ public class TransactionController {
 
     // 잔액 사용
     @PostMapping("/transaction/use")
+    @AccountLock
     public UseBalance.Response useBalance(
-        @RequestBody @Valid UseBalance.Request requestDto) {
+        @RequestBody @Valid UseBalance.Request requestDto
+    ) throws InterruptedException {
         try {
+            Thread.sleep(5000L);
             return UseBalance.Response.from(
                 transactionService.useBalance(
                     requestDto.getUserId(),
                     requestDto.getAccountNumber(),
                     requestDto.getAmount())
             );
-        } catch (ArithmeticException e) {
+        } catch (AccountException e) {
+
             log.error("Failed to use balance");
+
             transactionService.saveFailedUseTransaction(
                 requestDto.getAccountNumber(),
                 requestDto.getAmount()
@@ -40,6 +47,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transaction/cancel")
+    @AccountLock
     public CancelBalance.Response cancelBalance(
         @RequestBody @Valid CancelBalance.Request requestDto) {
         try {

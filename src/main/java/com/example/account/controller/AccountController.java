@@ -1,16 +1,12 @@
 package com.example.account.controller;
 
 
-import com.example.account.dto.AccountDto;
 import com.example.account.dto.AccountInfo;
 import com.example.account.dto.CloseAccount;
 import com.example.account.dto.CreateAccount;
 import com.example.account.service.AccountService;
-import com.example.account.service.RedisTestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +18,6 @@ import java.util.stream.Collectors;
 public class AccountController {
 
     private final AccountService accountService;
-    private final RedisTestService redisTestService;
 
     // 계좌 생성
     @PostMapping("/account")

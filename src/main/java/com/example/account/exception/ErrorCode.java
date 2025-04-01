@@ -12,6 +12,7 @@ public enum ErrorCode {
     USER_ACCOUNT_PER_USER_10("사용자 최대 계좌는 10개 입니다"),
     USER_ACCOUNT_UN_MATCH("사용자와 계좌의 소유가 다릅니다."),
     ACCOUNT_NOT_FOUND("계좌를 찾을 수 없습니다"),
+    ACCOUNT_TRANSACTION_LOCK("해당 계좌는 사용 중입니다"),
     ACCOUNT_ALREADY_UNREGISTERED("계좌가 이미 해지되었습니다."),
     AMOUNT_EXCEED_BALANCE("거래금액이 개좌 잔액보다 큽니다"),
     BALANCE_NOT_EMPTY("잔액이 있는 계좌는 해지할 수 없습니다."),

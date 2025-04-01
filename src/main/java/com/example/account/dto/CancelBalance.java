@@ -1,8 +1,10 @@
 package com.example.account.dto;
 
+import com.example.account.aop.AccountLockIIdInterface;
 import com.example.account.type.TransactionResultType;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class CancelBalance {
@@ -10,7 +12,7 @@ public class CancelBalance {
     @Setter
     @Getter
     @NoArgsConstructor
-    public static class Request {
+    public static class Request implements AccountLockIIdInterface {
         private String accountNumber;
         private String transactionId;
         private Long amount;
