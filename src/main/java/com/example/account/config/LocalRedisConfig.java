@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import redis.embedded.RedisServer;
 
 
-
 @Configuration
 public class LocalRedisConfig {
     @Value("${spring.data.redis.port}")

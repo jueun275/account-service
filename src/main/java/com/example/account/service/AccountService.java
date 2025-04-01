@@ -1,13 +1,13 @@
 package com.example.account.service;
 
 import com.example.account.domain.Account;
-import com.example.account.type.AccountStatus;
 import com.example.account.domain.AccountUser;
 import com.example.account.dto.AccountDto;
 import com.example.account.exception.AccountException;
 import com.example.account.exception.ErrorCode;
 import com.example.account.repository.AccountRepository;
 import com.example.account.repository.AccountUserRepository;
+import com.example.account.type.AccountStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,8 +32,7 @@ public class AccountService {
      */
     @Transactional
     public AccountDto createAccount(Long userId, Long initialBalance) {
-        AccountUser user = accountUserRepository.findById(userId)
-            .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+        AccountUser user = getAccountUser(userId);
 
         validateCreateAccount(user);
 
@@ -49,8 +48,7 @@ public class AccountService {
 
     @Transactional
     public List<AccountDto> getAccountByUserId(Long userId) {
-        AccountUser user = accountUserRepository.findById(userId)
-            .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+        AccountUser user = getAccountUser(userId);
 
         List<Account> accounts = accountRepository.findByAccountUserAndAccountStatus(user, AccountStatus.IN_USE);
 
@@ -62,8 +60,7 @@ public class AccountService {
 
     @Transactional
     public AccountDto closeAccount(Long userId, String accountNumber) {
-        AccountUser user = accountUserRepository.findById(userId)
-            .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+        AccountUser user = getAccountUser(userId);
 
         Account account = accountRepository.findByAccountNumber(accountNumber)
             .orElseThrow(() -> new AccountException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -74,6 +71,12 @@ public class AccountService {
 
        return AccountDto.fromEntity(account);
 
+    }
+
+    private AccountUser getAccountUser(Long userId) {
+        AccountUser user = accountUserRepository.findById(userId)
+            .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+        return user;
     }
 
 

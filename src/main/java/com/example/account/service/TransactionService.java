@@ -1,16 +1,16 @@
 package com.example.account.service;
 
 import com.example.account.domain.Account;
-import com.example.account.type.AccountStatus;
 import com.example.account.domain.AccountUser;
 import com.example.account.domain.Transaction;
 import com.example.account.dto.TransactionDto;
-import com.example.account.type.TransactionResultType;
 import com.example.account.exception.AccountException;
 import com.example.account.exception.ErrorCode;
 import com.example.account.repository.AccountRepository;
 import com.example.account.repository.AccountUserRepository;
 import com.example.account.repository.TransactionRepository;
+import com.example.account.type.AccountStatus;
+import com.example.account.type.TransactionResultType;
 import com.example.account.type.TransactionType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

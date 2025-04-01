@@ -26,7 +26,7 @@ public class TransactionController {
         @RequestBody @Valid UseBalance.Request requestDto
     ) throws InterruptedException {
         try {
-            Thread.sleep(5000L);
+//            Thread.sleep(5000L);
             return UseBalance.Response.from(
                 transactionService.useBalance(
                     requestDto.getUserId(),
