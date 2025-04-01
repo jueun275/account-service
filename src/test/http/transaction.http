@@ -8,7 +8,18 @@ Content-Type: application/json
 
 {
   "userId": 1,
-  "accountNumber":"1000000001",
+  "accountNumber":"1000000000",
+  "amount": 3000
+}
+
+
+###Use Balance_2
+POST http://localhost:8080/transaction/use
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "accountNumber":"1000000000",
   "amount": 3000
 }
 
