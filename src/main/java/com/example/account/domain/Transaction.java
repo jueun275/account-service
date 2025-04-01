@@ -1,9 +1,6 @@
 package com.example.account.domain;
 
-import com.example.account.dto.TransactionResultType;
-import com.example.account.exception.AccountException;
-import com.example.account.exception.ErrorCode;
-import com.example.account.type.TransactionStatus;
+import com.example.account.type.TransactionResultType;
 import com.example.account.type.TransactionType;
 import jakarta.persistence.*;
 import lombok.Builder;

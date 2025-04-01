@@ -1,5 +1,6 @@
 package com.example.account.dto;
 
+import com.example.account.type.TransactionResultType;
 import lombok.*;
 
 import java.time.LocalDateTime;

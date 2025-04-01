@@ -1,5 +1,6 @@
 package com.example.account.dto;
 
+import com.example.account.type.TransactionResultType;
 import com.example.account.type.TransactionType;
 import lombok.Builder;
 import lombok.Getter;

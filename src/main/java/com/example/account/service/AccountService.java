@@ -1,7 +1,7 @@
 package com.example.account.service;
 
 import com.example.account.domain.Account;
-import com.example.account.domain.AccountStatus;
+import com.example.account.type.AccountStatus;
 import com.example.account.domain.AccountUser;
 import com.example.account.dto.AccountDto;
 import com.example.account.exception.AccountException;
@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 

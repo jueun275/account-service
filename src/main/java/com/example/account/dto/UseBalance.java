@@ -1,5 +1,6 @@
 package com.example.account.dto;
 
+import com.example.account.type.TransactionResultType;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

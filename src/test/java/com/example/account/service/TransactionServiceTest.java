@@ -1,7 +1,7 @@
 package com.example.account.service;
 
 import com.example.account.domain.Account;
-import com.example.account.domain.AccountStatus;
+import com.example.account.type.AccountStatus;
 import com.example.account.domain.AccountUser;
 import com.example.account.domain.Transaction;
 import com.example.account.dto.TransactionDto;
@@ -21,8 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static com.example.account.dto.TransactionResultType.FAILED;
-import static com.example.account.dto.TransactionResultType.SUCCESS;
+import static com.example.account.type.TransactionResultType.FAILED;
+import static com.example.account.type.TransactionResultType.SUCCESS;
 import static com.example.account.type.TransactionType.CANCEL;
 import static com.example.account.type.TransactionType.USE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -365,7 +365,7 @@ class TransactionServiceTest {
         assertEquals(ErrorCode.ACCOUNT_NOT_FOUND, exception.getErrorCode());
     }
 
-    @DisplayName("거래 계좌 다름 -  잔액 사용 취소 실패")
+    @DisplayName("거래 계좌 다름 - 잔액 사용 취소 실패")
     @Test
     void cancelBalance_AccountUnMatch() {
         // given

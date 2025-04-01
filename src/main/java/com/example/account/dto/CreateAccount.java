@@ -1,6 +1,10 @@
 package com.example.account.dto;
 
-import lombok.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -8,6 +12,7 @@ public class CreateAccount {
     @Setter
     @Getter
     public static class Request {
+        @NotNull
         private Long userId;
         private Long initBalance;
 

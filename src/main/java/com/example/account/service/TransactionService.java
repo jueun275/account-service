@@ -1,11 +1,11 @@
 package com.example.account.service;
 
 import com.example.account.domain.Account;
-import com.example.account.domain.AccountStatus;
+import com.example.account.type.AccountStatus;
 import com.example.account.domain.AccountUser;
 import com.example.account.domain.Transaction;
 import com.example.account.dto.TransactionDto;
-import com.example.account.dto.TransactionResultType;
+import com.example.account.type.TransactionResultType;
 import com.example.account.exception.AccountException;
 import com.example.account.exception.ErrorCode;
 import com.example.account.repository.AccountRepository;
@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.example.account.dto.TransactionResultType.FAILED;
-import static com.example.account.dto.TransactionResultType.SUCCESS;
+import static com.example.account.type.TransactionResultType.FAILED;
+import static com.example.account.type.TransactionResultType.SUCCESS;
 
 @RequiredArgsConstructor
 @Service

@@ -2,7 +2,7 @@ package com.example.account.controller;
 
 import com.example.account.dto.CancelBalance;
 import com.example.account.dto.TransactionDto;
-import com.example.account.dto.TransactionResultType;
+import com.example.account.type.TransactionResultType;
 import com.example.account.dto.UseBalance;
 import com.example.account.service.TransactionService;
 import com.example.account.type.TransactionType;
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
-import static com.example.account.dto.TransactionResultType.SUCCESS;
+import static com.example.account.type.TransactionResultType.SUCCESS;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -112,12 +112,12 @@ class TransactionControllerTest {
 
         // when
         // then
-        mockMvc.perform(get("/transaction/{transactionId}", "c5de3e889bec4b26bdbca0474eb93949"))
+        mockMvc.perform(get("/transaction/{transactionId}", "transactionIdForCancel"))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.accountNumber").value("1000000000"))
             .andExpect(jsonPath("$.transactionResultType").value("SUCCESS"))
-            .andExpect(jsonPath("$.transactionId").value("c5de3e889bec4b26bdbca0474eb93949"));
+            .andExpect(jsonPath("$.transactionId").value("transactionIdForCancel"));
 
     }
 

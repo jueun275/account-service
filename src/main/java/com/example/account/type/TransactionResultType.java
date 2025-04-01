@@ -1,4 +1,4 @@
-package com.example.account.dto;
+package com.example.account.type;
 
 public enum TransactionResultType {
     SUCCESS, FAILED

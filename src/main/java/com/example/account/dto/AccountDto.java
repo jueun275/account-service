@@ -1,7 +1,7 @@
 package com.example.account.dto;
 
 import com.example.account.domain.Account;
-import com.example.account.domain.AccountStatus;
+import com.example.account.type.AccountStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,6 +3,7 @@ package com.example.account.domain;
 
 import com.example.account.exception.AccountException;
 import com.example.account.exception.ErrorCode;
+import com.example.account.type.AccountStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
